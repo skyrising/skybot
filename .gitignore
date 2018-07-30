@@ -1,0 +1,4 @@
+node_modules/
+guild-settings/
+.cache/
+config.json

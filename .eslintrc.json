@@ -1,0 +1,30 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "node": true
+  },
+  "plugins": [
+    "flowtype",
+    "standard",
+    "react"
+  ],
+  "extends": [
+    "standard",
+    "plugin:flowtype/recommended",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "prefer-const": 2,
+    "flowtype/union-intersection-spacing": 0,
+    "flowtype/no-types-missing-file-annotation": 0,
+    "no-unused-vars": 1,
+    "react/prop-types": 0 // until https://github.com/yannickcr/eslint-plugin-react/issues/1376 is fixed
+  }
+}

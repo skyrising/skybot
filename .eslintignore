@@ -1,0 +1,4 @@
+/flow-typed/*
+/dist/*
+/static/*
+/coverage/*
