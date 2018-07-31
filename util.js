@@ -1,6 +1,6 @@
 import fs from 'mz/fs'
 
-export function onChange (obj, callback, prefix, baseObj = obj) {
+export function onChange (obj, callback, baseObj = obj) {
   return new Proxy(obj, {
     set (base, key, value) {
       if (typeof value === 'object') value = onChange(value, callback, baseObj)

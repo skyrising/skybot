@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node -r @babel/register index.js",
+    "dev": "node --experimental-vm-modules -r @babel/register index.js",
     "test": "env BABEL_ENV=test nyc ava"
   },
   "author": "",
