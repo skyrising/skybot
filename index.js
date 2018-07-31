@@ -143,7 +143,7 @@ import {getModule} from './script'
             case 'script': {
               const mod = await getModule(custom.url, context)
               const {result} = await mod.evaluate()
-              return result()
+              return await result(context)
             }
           }
         }

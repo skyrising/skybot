@@ -33,19 +33,19 @@ export async function getModule (url, context) {
   if (moduleCache[context.guild.id][url]) return moduleCache[context.guild.id][url]
   const source =
 `import def from '${url}'
-async  function main () {
+async function main (context) {
   console.log(def)
-  if (typeof def === 'function') await def()
+  if (typeof def === 'function') await def(context)
 }
 main
 `
-  console.log(source)
-  const mod = new vm.Module(source, {context: createContext(context)})
+  const ctx = createContext({guild: context.guild, settings: context.settings})
+  const mod = new vm.Module(source, {context: ctx})
   await mod.link(async (spec, ref) => {
     const url = new URL(spec, ref.url).toString()
     if (moduleCache[context.guild.id][url]) return moduleCache[context.guild.id][url]
     const code = await getScript(url, context)
-    const mod = new vm.Module(code, {url, context: ref.context})
+    const mod = new vm.Module(code, {url, context: ctx})
     moduleCache[context.guild.id][url] = mod
     return mod
   })
@@ -62,8 +62,14 @@ export async function getScript (url, context) {
   return fs.readFile(cacheFile, 'utf8')
 }
 
-export function createContext (context) {
-  return vm.createContext(context)
+export function makeGlobal (g) {
+  const gnew = {global: undefined, ...g}
+  gnew.global = gnew
+  return gnew
+}
+
+export function createContext (context = {}) {
+  return vm.createContext(makeGlobal(context))
 }
 
 export async function execute (url, context) {
@@ -72,11 +78,3 @@ export async function execute (url, context) {
     timeout: 100
   })
 }
-
-getScript('https://pastebin.com/raw/RsmxNvhe', {
-  issuer: {
-    user: '334410628871749632',
-    channel: '423506375780466688',
-    guild: '211786369951989762'
-  }
-})
